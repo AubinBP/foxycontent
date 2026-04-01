@@ -15,8 +15,8 @@ export async function getPublishedArticles() {
       publishedAt: articles.publishedAt,
     })
     .from(articles)
-    .where(eq(articles.status, "published"))
-    .orderBy(desc(articles.publishedAt));
+    .where(eq(articles.status, "published")) // Filtre critique [cite: 113]
+    .orderBy(desc(articles.publishedAt)); // Plus récent en premier [cite: 43]
 }
 
 export async function getArticleBySlug(slug: string) {

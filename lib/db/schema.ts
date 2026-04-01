@@ -9,9 +9,11 @@ export const articles = sqliteTable("articles", {
   tags: text("tags"), // JSON stringifié
   status: text("status").notNull().default("draft"), // draft | published
   readingTime: integer("reading_time"),
+  internalLinks: text("internal_links"),
   content: text("content"), // MDX complet
   createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(() => new Date()),
   publishedAt: integer("published_at", { mode: "timestamp" }),
+
 });
 
 export const briefs = sqliteTable("briefs", {
