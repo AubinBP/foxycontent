@@ -38,22 +38,22 @@ export default async function DashboardPage() {
   }
 
   return (
-    <main>
-      <div>
-        <h1>Dashboard</h1>
-        <Link href="/admin/generate">
+    <main className="max-w-5xl mx-auto p-10">
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="font-bold text-3xl">Dashboard</h1>
+        <Link href="/admin/generate" className="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg transition-colors">
           + Nouvel article
         </Link>
       </div>
 
-      <div>
-        <Card title="Total articles" value={total} />
+      <div className="grid grid-cols-3 gap-6 mb-10">
+        <Card  title="Total articles" value={total} />
         <Card title="Publiés" value={published} color="green" />
         <Card title="Brouillons" value={draft} color="orange" />
       </div>
 
       <div>
-        <h2>Tous les articles</h2>
+        <h2 className="font-semibold text-lg mb-4">Tous les articles</h2>
 
         {allArticles.length === 0 ? (
           <div>
@@ -63,49 +63,49 @@ export default async function DashboardPage() {
             </Link>
           </div>
         ) : (
-          <div>
-            <table>
-              <thead>
+          <div className="border rounded-xl overflow-hidden">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50 border-b">
                 <tr>
-                  <th>Titre</th>
-                  <th>Catégorie</th>
-                  <th>Statut</th>
-                  <th>Date</th>
-                  <th>Actions</th>
+                  <th className="text-left font-medium px-4 py-3 text-gray-700">Titre</th>
+                  <th className="text-left font-medium px-4 py-3 text-gray-700">Catégorie</th>
+                  <th className="text-left font-medium px-4 py-3 text-gray-700">Statut</th>
+                  <th className="text-left font-medium px-4 py-3 text-gray-700">Date</th>
+                  <th className="text-left font-medium px-4 py-3 text-gray-700">Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-gray-200">
                 {allArticles.map((article) => (
-                  <tr key={article.id}>
-                    <td>
-                      <Link href={`/admin/articles/${article.id}`}>
+                  <tr key={article.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3">
+                      <Link href={`/admin/articles/${article.id}`} className="font-medium text-gray-800 hover:text-green-600 transition-colors">
                         {article.title ?? "Sans titre"}
                       </Link>
-                      <p>/{article.slug}</p>
+                      <p className="text-xs text-gray-400 mt-0.5">/{article.slug}</p>
                     </td>
-                    <td>
+                    <td className="text-xs">
                       {article.family ? (
-                        <span>
+                        <span className="whitespace-nowrap text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
                           {article.family.replace(/-/g, " ")}
                         </span>
                       ) : (
-                        <span>—</span>
+                        <span className="px-4 py-3">—</span>
                       )}
                     </td>
-                    <td>
-                      <span>
+                    <td className="px-4 py-3">
+                      <span className={`text-xs px-2 py-1 rounded-full font-medium ${article.status === "published" ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-700"}`}>
                         {article.status === "published" ? "Publié" : "Brouillon"}
                       </span>
                     </td>
-                    <td>
+                    <td className="px-4 py-3 text-gray-400 text-xs">
                       {article.createdAt
                         ? new Date(article.createdAt).toLocaleDateString("fr-FR")
                         : "—"}
                     </td>
-                    <td>
-                      <div>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center justify-end gap-2">
                         {article.status !== "published" && (
-                          <Link href={`/admin/articles/${article.id}`}>
+                          <Link href={`/admin/articles/${article.id}`}className="text-xs text-blue-600 hover:underline">
                             Réviser
                           </Link>
                         )}
@@ -114,14 +114,14 @@ export default async function DashboardPage() {
                             href={`/${article.slug}`}
                             target="_blank"
                             rel="noopener noreferrer"
+                            className="text-xs text-green-600 hover:underline"
                           >
                             Voir
                           </a>
                         )}
                         <form action={deleteAction}>
                           <input type="hidden" name="id" value={article.id} />
-                          <DeleteButton id={article.id} />
-                        </form>
+                          <DeleteButton id={article.id} className="text-xs text-red-900 hover:text-red-800 hover:underline" />                        </form>
                       </div>
                     </td>
                   </tr>
@@ -144,10 +144,16 @@ function Card({
   value: number;
   color?: "gray" | "green" | "orange";
 }) {
+  const colors = {
+    gray: "border-gray-200",
+    green: "border-green-200 bg-green-50",
+    orange: "border-orange-200 bg-orange-50",
+  };
+
   return (
-    <div>
-      <p>{title}</p>
-      <p>{value}</p>
+    <div className={`p-6 rounded-xl border ${colors[color]}`}>
+      <p className="text-gray-500 text-sm">{title}</p>
+      <p className="text-3xl font-bold mt-2">{value}</p>
     </div>
   );
 }

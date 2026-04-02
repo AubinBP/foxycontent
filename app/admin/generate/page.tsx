@@ -48,15 +48,15 @@ export default function GeneratePage() {
 
   return (
     <main className="max-w-2xl mx-auto p-10">
-      <div>
+      <div className="mb-8">
         <a href="/admin/dashboard">
           ← Retour au dashboard
         </a>
       </div>
 
-      <h1>Générer un article</h1>
-      <p>
-        Remplis les informations ci dessous les informations pour l'articles, Phi va rédiger l&apos;article en fonction des informations remplis.
+      <h1 className="text-xl pb-2 font-bold">Générer un article</h1>
+      <p className="pb-6">
+        Remplis les informations ci dessous pour l'articles, Phi va rédiger l&apos;article en fonction des informations remplis.
       </p>
 
       {error && (
@@ -66,8 +66,8 @@ export default function GeneratePage() {
       )}
 
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>
+        <div className="pb-5">
+          <label className="block text-gray mb-1">
             Sujet de l&apos;article 
           </label>
           <input
@@ -77,39 +77,34 @@ export default function GeneratePage() {
           />
         </div>
 
-        <div>
-          <label>
-            Catégorie 
+        <div className="pb-5">
+          <label className="block text-gray mb-1">
+            Catégorie (filtre blog)
           </label>
           <select
             name="family"
             required
           >
-            <option value="">Choisir une catégorie...</option>
+            <option value="">Choisir une catégorie</option>
             {FAMILIES.map((f) => (
               <option key={f.value} value={f.value}>
                 {f.label}
               </option>
             ))}
           </select>
-          <p>
-            La catégorie détermine dans quel filtre l&apos;article apparaît sur le blog.
-          </p>
         </div>
 
-        <div>
-          <label>
-            Mots-clés SEO
+        <div className="pb-5">
+          <label className="block text-gray mb-1">
+            Mots-clés SEO (séparés par des virgules)
           </label>
           <input
             name="keywords"
             required
             placeholder="emballage compostable, CHR écolo, packaging restauration"
           />
-          <p>Séparés par des virgules.</p>
         </div>
 
-        {/* Angle */}
         <div>
           <label>
             Angle éditorial 
@@ -127,8 +122,8 @@ export default function GeneratePage() {
           </select>
         </div>
 
-        <div>
-          <label>
+        <div className="pt-5">
+          <label className="block text-gray mb-1">
             Longueur cible (mots)
           </label>
           <input
@@ -140,8 +135,8 @@ export default function GeneratePage() {
           />
         </div>
 
-        <div>
-          <label>
+        <div className="pt-5">
+          <label className="block text-gray mb-1">
             Ancre du backlink vers foxtable.com
           </label>
           <input
@@ -150,8 +145,8 @@ export default function GeneratePage() {
           />
         </div>
 
-        <div>
-          <label>
+        <div className="pt-5">
+          <label className="block text-gray mb-1">
             Notes complémentaires (optionnel)
           </label>
           <textarea
@@ -162,6 +157,7 @@ export default function GeneratePage() {
         </div>
 
         <button
+        className="font-bold text-xl mt-4 border-2 bg-green-500 p-2 text-white rounded-md"
           type="submit"
           disabled={loading}
         >

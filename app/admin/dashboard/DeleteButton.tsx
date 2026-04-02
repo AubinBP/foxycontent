@@ -1,8 +1,8 @@
 "use client";
 
-export default function DeleteButton({ id }: { id: number }) {
+export default function DeleteButton({ id, className }: { id: number, className?: string }) {
   function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
-    if (!confirm("Supprimer cet article définitivement ?")) {
+  if (!confirm("Supprimer cet article définitivement ?")) {
       e.preventDefault();
     }
   }
@@ -11,6 +11,7 @@ export default function DeleteButton({ id }: { id: number }) {
     <button
       type="submit"
       onClick={handleClick}
+      className={className}
     >
       Supprimer
     </button>
