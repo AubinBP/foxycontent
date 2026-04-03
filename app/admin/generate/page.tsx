@@ -137,7 +137,7 @@ export default function GeneratePage() {
 
         <div className="pt-5">
           <label className="block text-gray mb-1">
-            Ancre du backlink vers foxtable.com
+            Ancre du backlink vers foxytable.com
           </label>
           <input
             name="anchor"

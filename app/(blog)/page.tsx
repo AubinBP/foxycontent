@@ -105,7 +105,7 @@ export default async function BlogPage({
             </div>
 
             <div className="md:w-80">
-              <SearchBar />
+              <SearchBar articles={allArticles} />           
             </div>
           </div>
         </div>
@@ -237,9 +237,7 @@ export default async function BlogPage({
                         <Link href={`/${article.slug}`}>
                           <h2
                             className="text-2xl font-bold leading-snug group-hover:text-[#B8912A] transition-colors mb-2"
-                            style={{ fontFamily: "'Playfair Display', serif" }}
-                            data-title={article.title.toLowerCase()}
-                          >
+                            style={{ fontFamily: "'Playfair Display', serif" }}                          >
                             {article.title}
                           </h2>
                         </Link>

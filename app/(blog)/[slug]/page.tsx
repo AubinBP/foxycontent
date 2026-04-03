@@ -3,6 +3,7 @@ import { getArticleBySlug, getPublishedArticles } from "@/lib/articles";
 import type { Metadata } from "next";
 import ReactMarkdown from "react-markdown";
 import Link from "next/link";
+import SearchBar from "@/components/searchbar";
 
 export async function generateStaticParams() {
   const articles = await getPublishedArticles();
@@ -61,7 +62,11 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = await getArticleBySlug(slug);
+  
+  const [article, allArticles] = await Promise.all([
+    getArticleBySlug(slug),
+    getPublishedArticles(),
+  ]);
 
   if (!article || article.status !== "published") notFound();
 
@@ -88,6 +93,7 @@ export default async function ArticlePage({
       />
 
       <div className="min-h-screen bg-[#F7F5F0] font-['Crimson_Pro',serif]">
+        {/* Top bar date */}
         <div className="bg-[#1A1A18] text-gray-400 text-xs font-['DM_Sans',sans-serif] tracking-widest uppercase">
           <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
             <span>Le média des pros CHR</span>
@@ -104,21 +110,28 @@ export default async function ArticlePage({
 
         <header className="bg-[#1A1A18] text-white border-b-4 border-[#D4A853]">
           <div className="max-w-7xl mx-auto px-6 py-8">
-            <Link href="/" className="inline-block group">
-              <p className="font-['DM_Sans',sans-serif] text-[#D4A853] text-xs tracking-[0.3em] uppercase mb-2">
-                Café · Hôtel · Restaurant
-              </p>
-              <h1
-                className="text-5xl md:text-6xl font-black tracking-tight leading-none"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                CHR
-                <span className="text-[#D4A853]">.</span>
-                <span className="text-3xl md:text-4xl font-normal italic">
-                  Insights
-                </span>
-              </h1>
-            </Link>
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+              <Link href="/" className="inline-block group">
+                <p className="font-['DM_Sans',sans-serif] text-[#D4A853] text-xs tracking-[0.3em] uppercase mb-2">
+                  Café · Hôtel · Restaurant
+                </p>
+                <h1
+                  className="text-5xl md:text-6xl font-black tracking-tight leading-none"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  CHR
+                  <span className="text-[#D4A853]">.</span>
+                  <br className="md:hidden" />
+                  <span className="text-3xl md:text-4xl font-normal italic">
+                    {" "}Insights
+                  </span>
+                </h1>
+              </Link>
+
+              <div className="md:w-80">
+                <SearchBar articles={allArticles} />
+              </div>
+            </div>
           </div>
 
           <nav className="border-t border-white/10">
@@ -176,9 +189,7 @@ export default async function ArticlePage({
         </div>
 
         <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
-
           <div className="lg:col-span-8">
-
             <header className="mb-8 pb-8 border-b-2 border-[#1A1A18]">
               {article.family && (
                 <span
@@ -229,7 +240,8 @@ export default async function ArticlePage({
               </div>
             </header>
 
-            <article className="prose prose-lg max-w-none
+            <article
+              className="prose prose-lg max-w-none
               prose-headings:font-['Playfair_Display',serif] prose-headings:font-bold prose-headings:text-[#1A1A18]
               prose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-gray-200
               prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3
@@ -306,7 +318,6 @@ export default async function ArticlePage({
           </div>
 
           <aside className="lg:col-span-4 space-y-8">
-
             <div className="bg-[#1A1A18] text-white p-6">
               <p className="font-['DM_Sans',sans-serif] text-[#D4A853] text-xs tracking-widest uppercase mb-3">
                 À propos
@@ -345,98 +356,8 @@ export default async function ArticlePage({
                 ))}
               </ul>
             </div>
-
-            <div className="bg-white border border-gray-200 p-6">
-              <p className="font-['DM_Sans',sans-serif] text-xs tracking-widest uppercase text-gray-500 mb-4">
-                Sujets tendance
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  "Emballages eco",
-                  "Réglementation 2025",
-                  "Marché HORECA",
-                  "Plastique alternatif",
-                  "Food cost",
-                  "Livraison",
-                  "Barista",
-                  "Menu engineering",
-                ].map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs font-['DM_Sans',sans-serif] border border-gray-300 px-2.5 py-1 text-gray-600 hover:border-[#D4A853] hover:text-[#B8912A] cursor-pointer transition-colors"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
           </aside>
         </div>
-
-        <footer className="bg-[#1A1A18] text-gray-400 mt-16">
-          <div className="max-w-7xl mx-auto px-6 py-12">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
-              <div>
-                <h2
-                  className="text-white text-3xl font-black mb-3"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  CHR<span className="text-[#D4A853]">.</span>
-                  <span className="text-xl font-normal italic">Insights</span>
-                </h2>
-                <p className="text-sm leading-relaxed">
-                  Le média indépendant dédié aux professionnels du café, hôtel et
-                  restauration en France.
-                </p>
-              </div>
-
-              <div>
-                <p className="font-['DM_Sans',sans-serif] text-xs tracking-widest uppercase text-[#D4A853] mb-4">
-                  Rubriques
-                </p>
-                <ul className="space-y-2 text-sm font-['DM_Sans',sans-serif]">
-                  {FAMILIES.map((f) => (
-                    <li key={f.value}>
-                      <Link
-                        href={`/?family=${f.value}`}
-                        className="hover:text-white transition-colors"
-                      >
-                        {f.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <p className="font-['DM_Sans',sans-serif] text-xs tracking-widest uppercase text-[#D4A853] mb-4">
-                  Mentions légales
-                </p>
-                <ul className="space-y-2 text-sm font-['DM_Sans',sans-serif]">
-                  <li>
-                    <Link href="/mentions-legales" className="hover:text-white transition-colors">
-                      Mentions légales
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/confidentialite" className="hover:text-white transition-colors">
-                      Politique de confidentialité
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-              <p className="text-xs font-['DM_Sans',sans-serif]">
-                © {new Date().getFullYear()} CHR Insights - Tous droits réservés
-              </p>
-              <p className="text-xs font-['DM_Sans',sans-serif] text-gray-600">
-                Média d&apos;information professionnelle CHR
-              </p>
-            </div>
-          </div>
-        </footer>
       </div>
     </>
   );

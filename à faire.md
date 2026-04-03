@@ -1,11 +1,8 @@
 # à faire
-- La barre de recherche des articles à revoir (elle cache les articles qui n'on pas le mots comme titre mais si on utilise le filtre on ne trouve pas. Faudrait que la barre de recherche est un déroulement)
-- Probème dans la génération des backlinks (certain ne marche pas), définir 5-6 bakcklink qui tourne.
+- Probème avec les backlinks il dirigent pas vers un truc logique et il dirige vers foxtable.com et pas foxytable.
 
-# Prochaine étapes
-- Génération d'articles avec sujet scrapé de l'actu, toujours par l'admin.
-- Automatisation des générations des articles (sans admin), il faut 2 à 3 articles par jour qui se génère tout seul sur le site. Il faudra qu'il soit directement en publish.
-
+# A faire mardi :
+- Le Dashboard tout groupé et fonctionnel à 100%
 
 # Une fois l'app fini il faudra améliorer le dashboard : 
 - Filtre de recherche
@@ -18,4 +15,10 @@
 - Barre de recherche articles nom
 - Plusieurs modèle (vraiment pas utile mais si j'ai le temps)
 
-Quand le site serra publié optimiser le référencement pour que quand l'utilisateur pose une question sur le web il tombe sur un article.
+
+# Quand le site serra en ligne 
+- Optimiser le référencement pour que quand l'utilisateur pose une question sur le web il tombe sur un article.
+- Régler vercel pour que les articles se génère bien.
+
+# Commande pour forcer la génération des articles manuellement : 
+http://localhost:3000/api/cron?token=foxycontent-secret-2026

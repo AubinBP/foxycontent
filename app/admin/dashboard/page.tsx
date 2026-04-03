@@ -41,10 +41,23 @@ export default async function DashboardPage() {
     <main className="max-w-5xl mx-auto p-10">
       <div className="flex items-center justify-between mb-8">
         <h1 className="font-bold text-3xl">Dashboard</h1>
-        <Link href="/admin/generate" className="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg transition-colors">
-          + Nouvel article
-        </Link>
+<div className="flex items-center gap-3">
+  <Link
+    href="/admin/settings"
+    className="border border-gray-300 hover:border-gray-400 text-gray-600 text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+  >
+    ⚙ Paramètres
+  </Link>
+  <Link
+    href="/admin/generate"
+    className="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+  >
+    + Nouvel article
+  </Link>
+</div>
       </div>
+
+      
 
       <div className="grid grid-cols-3 gap-6 mb-10">
         <Card  title="Total articles" value={total} />
