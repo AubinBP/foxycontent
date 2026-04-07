@@ -17,7 +17,6 @@ export default async function SettingsPage() {
     const perDay = formData.get("articles_per_day") as string;
     const auto = formData.get("auto_publish") === "on" ? "true" : "false";
 
-    // Récupère les 6 backlinks du formulaire
     const links = [];
     for (let i = 0; i < 6; i++) {
       const val = formData.get(`backlink_${i}`) as string;
@@ -30,15 +29,6 @@ export default async function SettingsPage() {
 
     revalidatePath("/admin/settings");
     redirect("/admin/settings");
-  }
-
-  async function triggerNow(formData: FormData) {
-    "use server";
-    const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
-    const secret = process.env.CRON_SECRET || "foxycontent-secret-2026";
-    await fetch(`${baseUrl}/api/cron?token=${secret}`);
-    revalidatePath("/admin/dashboard");
-    redirect("/admin/dashboard");
   }
 
   return (
@@ -56,7 +46,6 @@ export default async function SettingsPage() {
 
       <form action={saveSettings} className="space-y-8">
 
-        {/* Génération automatique */}
         <section className="border rounded-xl p-6">
           <h2 className="font-semibold text-gray-800 mb-4">Génération automatique</h2>
 
@@ -96,9 +85,8 @@ export default async function SettingsPage() {
           </div>
         </section>
 
-        {/* Backlinks */}
         <section className="border rounded-xl p-6">
-          <h2 className="font-semibold text-gray-800 mb-1">Backlinks vers foxtable.com</h2>
+          <h2 className="font-semibold text-gray-800 mb-1">Backlinks vers foxytable.com</h2>
           <p className="text-xs text-gray-400 mb-4">
             Ces 6 ancres sont utilisées en rotation dans chaque article généré.
           </p>
@@ -126,28 +114,6 @@ export default async function SettingsPage() {
           Sauvegarder les paramètres
         </button>
       </form>
-
-      {/* Déclenchement manuel */}
-      <section className="mt-8 border rounded-xl p-6 bg-gray-50">
-        <h2 className="font-semibold text-gray-800 mb-1">Déclencher maintenant</h2>
-        <p className="text-xs text-gray-400 mb-4">
-          Lance immédiatement une génération sans attendre le cron.
-          {lastCron && (
-            <span className="block mt-1">
-              Dernier déclenchement :{" "}
-              {new Date(lastCron).toLocaleString("fr-FR")}
-            </span>
-          )}
-        </p>
-        <form action={triggerNow}>
-          <button
-            type="submit"
-            className="bg-gray-800 hover:bg-gray-900 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-          >
-            ▶ Générer maintenant
-          </button>
-        </form>
-      </section>
     </main>
   );
 }

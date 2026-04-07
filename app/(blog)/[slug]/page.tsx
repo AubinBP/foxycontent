@@ -287,7 +287,7 @@ export default async function ArticlePage({
                   {internalLinks.map((anchor) => (
                     <li key={anchor}>
                       <a
-                        href="https://foxtable.com"
+                        href="https://foxytable.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-start gap-3 group"

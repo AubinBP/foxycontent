@@ -12,7 +12,7 @@ const DEFAULTS: Record<string, string> = {
     "packaging restauration",
     "ce fournisseur",
     "leur catalogue",
-    "https://foxtable.com",
+    "https://foxytable.com",
   ]),
   last_cron: "",
 };
