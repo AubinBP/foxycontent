@@ -3,7 +3,20 @@ import { db } from "@/lib/db";
 import { articles } from "@/lib/db/schema";
 import { getSetting, setSetting, getBacklinks } from "@/lib/settings";
 
-// Les familles et sujets automatiques — rotation
+async function getNews() {
+  try {
+    const res = await fetch(
+      `https://newsapi.org/v2/everything?q=restauration OR CHR&language=fr&sortBy=publishedAt&pageSize=5&apiKey=${process.env.NEWS_API_KEY}`
+    );
+
+    const data = await res.json();
+    return data.articles || [];
+  } catch (error) {
+    console.error("Erreur récupération news:", error);
+    return [];
+  }
+}
+
 const AUTO_BRIEFS = [
   {
     topic: "Les tendances des emballages biodégradables en CHR en 2025",
@@ -29,50 +42,13 @@ const AUTO_BRIEFS = [
     keywords: ["AGEC restauration", "loi emballage", "réglementation CHR"],
     angle: "actualité",
   },
-  {
-    topic: "Choisir son emballage selon le type de plat : le guide complet",
-    family: "guides-pratiques",
-    keywords: ["choisir emballage", "packaging plat chaud", "emballage livraison"],
-    angle: "guide pratique",
-  },
-  {
-    topic: "Statistiques CHR 2025 : chiffres clés du secteur",
-    family: "data-chiffres",
-    keywords: ["statistiques CHR", "chiffres restauration", "données secteur"],
-    angle: "data",
-  },
-  {
-    topic: "Les alternatives au plastique à usage unique en restauration",
-    family: "emballages-chr",
-    keywords: ["alternative plastique", "emballage sans plastique", "CHR durable"],
-    angle: "guide pratique",
-  },
-  {
-    topic: "Cocktails signature : comment se démarquer en bar CHR",
-    family: "boissons-bar",
-    keywords: ["cocktail signature", "bar CHR", "carte cocktails originale"],
-    angle: "guide pratique",
-  },
-  {
-    topic: "SIRHA 2026 : les innovations packaging à retenir",
-    family: "actualite-resto",
-    keywords: ["SIRHA 2026", "innovation packaging", "salon restauration"],
-    angle: "actualité",
-  },
-  {
-    topic: "Impact carbone des emballages en restauration : les vrais chiffres",
-    family: "data-chiffres",
-    keywords: ["impact carbone emballage", "bilan carbone CHR", "emballage écologique"],
-    angle: "data",
-  },
 ];
 
 export async function GET(req: Request) {
-  // Vérifie le token secret pour sécuriser le cron
   const { searchParams } = new URL(req.url);
   const token = searchParams.get("token");
 
-if (!process.env.CRON_SECRET || token !== process.env.CRON_SECRET){
+  if (!process.env.CRON_SECRET || token !== process.env.CRON_SECRET) {
     return Response.json({ error: "Non autorisé" }, { status: 401 });
   }
 
@@ -81,28 +57,46 @@ if (!process.env.CRON_SECRET || token !== process.env.CRON_SECRET){
     const autoPublish = (await getSetting("auto_publish")) === "true";
     const backlinks = await getBacklinks();
 
+    const news = await getNews();
+
     const results = [];
 
     for (let i = 0; i < articlesPerDay; i++) {
-      // Choisit un brief aléatoire dans la liste
-      const brief = AUTO_BRIEFS[Math.floor(Math.random() * AUTO_BRIEFS.length)];
+      let brief;
 
-      // Choisit une ancre backlink aléatoire dans les backlinks configurés
-      const anchor = backlinks[Math.floor(Math.random() * backlinks.length)];
+      if (news.length > 0 && Math.random() > 0.5) {
+        const randomNews = news[Math.floor(Math.random() * news.length)];
+
+        brief = {
+          topic: randomNews.title,
+          family: "actualite-resto",
+          keywords: ["actualité restauration", "CHR news"],
+          angle: "actualité",
+        };
+      } else {
+        brief = AUTO_BRIEFS[Math.floor(Math.random() * AUTO_BRIEFS.length)];
+      }
+
+      const anchor =
+        backlinks.length > 0
+          ? backlinks[Math.floor(Math.random() * backlinks.length)]
+          : "foxytable";
 
       try {
         const result = await generateArticle({
           ...brief,
           targetLength: 1000,
           backlinkAnchor: anchor,
+          withNews: true,
         });
-
-        // Vérifie que le slug n'existe pas déjà
         const slugBase = result.slug;
         const existing = await db.query.articles.findFirst({
           where: (a, { eq }) => eq(a.slug, slugBase),
         });
-        const finalSlug = existing ? `${slugBase}-${Date.now()}` : slugBase;
+
+        const finalSlug = existing
+          ? `${slugBase}-${Date.now()}`
+          : slugBase;
 
         await db.insert(articles).values({
           slug: finalSlug,
@@ -119,13 +113,23 @@ if (!process.env.CRON_SECRET || token !== process.env.CRON_SECRET){
 
         results.push({ slug: finalSlug, success: true });
       } catch (err) {
-        results.push({ brief: brief.topic, success: false, error: String(err) });
+        console.error("Erreur génération :", err);
+
+        results.push({
+          brief: brief.topic,
+          success: false,
+          error: String(err),
+        });
       }
     }
 
     await setSetting("last_cron", new Date().toISOString());
 
-    return Response.json({ success: true, generated: results });
+    return Response.json({
+      success: true,
+      generated: results,
+      usedNews: news.length > 0,
+    });
   } catch (err) {
     return Response.json({ error: String(err) }, { status: 500 });
   }

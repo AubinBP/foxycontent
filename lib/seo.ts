@@ -22,30 +22,23 @@ export function computeSeoScore(article: {
   const content = article.content ?? "";
   const slug = article.slug ?? "";
 
-  // 1. Longueur du titre (idéal 30-60 caractères)
   const titleOk = title.length >= 30 && title.length <= 60;
 
-  // 2. Longueur meta description (idéal 120-155 caractères)
   const metaOk = meta.length >= 120 && meta.length <= 155;
 
-  // 3. Nombre de mots (800-1400)
   const words = content.split(/\s+/).filter(Boolean).length;
   const wordOk = words >= 800 && words <= 1400;
 
-  // 4. Nombre de H2 (3-5 sections)
   const h2Matches = content.match(/^## .+/gm) ?? [];
   const h2Count = h2Matches.length;
   const h2Ok = h2Count >= 3 && h2Count <= 5;
 
-  // 5. Backlinks vers foxtable.com (2-3)
-  const backlinkMatches = content.match(/foxtable\.com/gi) ?? [];
-  const backlinkCount = backlinkMatches.length;
+const backlinkMatches = content.match(/foxytable\.com/gi) ?? [];  
+const backlinkCount = backlinkMatches.length;
   const backlinkOk = backlinkCount >= 2 && backlinkCount <= 3;
 
-  // 6. Format du slug (kebab-case, pas de majuscules ni espaces)
   const slugOk = /^[a-z0-9-]+$/.test(slug) && slug.length > 5;
 
-  // Calcul du score : chaque critère vaut des points
   const points = [
     titleOk ? 20 : title.length > 0 ? 10 : 0,
     metaOk ? 20 : meta.length > 0 ? 10 : 0,

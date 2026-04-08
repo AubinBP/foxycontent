@@ -1,6 +1,3 @@
-# à faire (mercredi)
-- Intégrer des contenu scrapé pour les artciles (actuellement "evergreen" toujours juste) Il faudra utiliser : Tavily.
-- Optimiser le référencement pour que quand l'utilisateur pose une question sur le web il tombe sur un article.
 
 # Jeudi
 - Faudrait tester en hébergeant le site et voir si la génération est bonne.
@@ -10,6 +7,7 @@
 
 # Quand le site serra en ligne 
 - Régler vercel pour que les articles se génère bien.
+- Vérifier si le SEO est bon
 
 # Commande pour forcer la génération des articles manuellement : 
 http://localhost:3000/api/cron?token=foxycontent-secret-2026
@@ -19,3 +17,5 @@ http://localhost:3000/api/cron?token=foxycontent-secret-2026
 - Mettre la bonne version de phi (actuellement phi4 mais il faut phi4-mini) (ça consome moins mais le pc tourne quand même à fond).
 - Optimiser le prompt ai.ts pour qu'il ai un meilleur score SEO.
 - Sur la page settings on peux scroll mais y a pas besoin.
+
+# Pas sur que l'actualité est bien affiché.
