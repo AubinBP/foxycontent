@@ -15,11 +15,9 @@ export default async function DashboardPage() {
   const publishedResult = await db.select({ value: count() }).from(articles).where(eq(articles.status, "published"));
   const draftResult = await db.select({ value: count() }).from(articles).where(eq(articles.status, "draft"));
   const recentArticles = await db.select().from(articles).orderBy(desc(articles.createdAt)).limit(5);
-
   const total = totalResult[0]?.value ?? 0;
   const published = publishedResult[0]?.value ?? 0;
   const draft = draftResult[0]?.value ?? 0;
-
   const allForScore = await db.select().from(articles);
   const avgScore = allForScore.length
     ? Math.round(allForScore.reduce((acc, a) => acc + computeSeoScore(a).score, 0) / allForScore.length)
@@ -72,11 +70,9 @@ export default async function DashboardPage() {
             <p className="text-xs text-gray-400">Lancer une génération unique</p>
           </div>
         </Link>
-
         <form action={triggerNow} className="h-full">
           <TriggerButton />
         </form>
-
         <Link href="/admin/articles" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-sm transition-all group">
           <div className="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 group-hover:bg-blue-100 transition-colors">≡</div>
           <div>
@@ -84,7 +80,6 @@ export default async function DashboardPage() {
             <p className="text-xs text-gray-400">{total} articles au total</p>
           </div>
         </Link>
-
         <Link href="/admin/settings" className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-sm transition-all group">
           <div className="w-9 h-9 bg-gray-100 rounded-lg flex items-center justify-center text-gray-500 group-hover:bg-gray-200 transition-colors">⚙</div>
           <div>
@@ -93,7 +88,6 @@ export default async function DashboardPage() {
           </div>
         </Link>
       </div>
-
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <h2 className="text-sm font-semibold text-gray-700">Articles récents</h2>
@@ -101,7 +95,6 @@ export default async function DashboardPage() {
             Voir tout →
           </Link>
         </div>
-
         {recentArticles.length === 0 ? (
           <div className="p-8 text-center">
             <p className="text-gray-400 text-sm">Aucun article pour l&apos;instant.</p>

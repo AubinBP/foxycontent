@@ -1,16 +1,11 @@
-// app/(blog)/page.tsx
-// ─── SEO maximal : metadata complète, JSON-LD WebSite + ItemList, sitemap hint ───
-
 import Link from "next/link";
 import { getPublishedArticles } from "@/lib/articles";
 import type { Metadata } from "next";
 import SearchBar from "@/components/searchbar";
 
 export const dynamic = "force-dynamic";
-
-// ── Metadata Next.js ─────────────────────────────────────────────────────────
 export const metadata: Metadata = {
-  title: "CHR Insights — Actualités Café, Hôtel, Restauration",
+  title: "CHR Insights - Actualités Café, Hôtel, Restauration",
   description:
     "CHR Insights : toute l'actualité des professionnels CHR. Emballages éco-responsables, tendances boissons & bar, gestion de restaurant, guides pratiques et données de marché.",
   keywords: [
@@ -47,8 +42,6 @@ export const metadata: Metadata = {
   },
 };
 
-// ── Constantes ────────────────────────────────────────────────────────────────
-
 const FAMILIES = [
   { value: "", label: "Tous les sujets" },
   { value: "emballages-chr", label: "Emballages CHR" },
@@ -75,9 +68,7 @@ const FAMILY_LABELS: Record<string, string> = {
 };
 
 const PER_PAGE = 10;
-const SITE_URL = process.env.NEXT_PUBLIC_URL ?? "https://chr-insights.fr";
-
-// ── Page ──────────────────────────────────────────────────────────────────────
+const SITE_URL = process.env.NEXT_PUBLIC_URL ?? "https://chr-insights.fr"; //J'ai mis ça comme url mais faudra s'adapté.
 
 export default async function BlogPage({
   searchParams,
@@ -103,7 +94,6 @@ export default async function BlogPage({
   const featured = paginated[0];
   const rest = paginated.slice(1);
 
-  // JSON-LD : WebSite (SearchAction pour Google Sitelinks Search Box)
   const websiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -122,7 +112,6 @@ export default async function BlogPage({
     },
   };
 
-  // JSON-LD : ItemList des articles visibles (aide Google à comprendre la liste)
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -139,7 +128,6 @@ export default async function BlogPage({
     })),
   };
 
-  // JSON-LD : Organization
   const orgJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -151,7 +139,6 @@ export default async function BlogPage({
 
   return (
     <>
-      {/* ── Structured data ── */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
@@ -164,13 +151,11 @@ export default async function BlogPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
       />
-
       <div className="min-h-screen bg-[#F7F5F0] font-['Crimson_Pro',serif]">
 
-        {/* ── TOP BAR ── */}
         <div className="bg-[#1A1A18] text-gray-400 text-xs font-['DM_Sans',sans-serif] tracking-widest uppercase">
-          <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
-            <span>Le média des pros CHR</span>
+          <div className="max-w-7xl mx-auto px-6 py-2">
+            <p>L'actualité du :</p>
             <time dateTime={new Date().toISOString().split("T")[0]}>
               {new Date().toLocaleDateString("fr-FR", {
                 weekday: "long",
@@ -181,8 +166,6 @@ export default async function BlogPage({
             </time>
           </div>
         </div>
-
-        {/* ── MASTHEAD ── */}
         <header className="bg-[#1A1A18] text-white border-b-4 border-[#D4A853]">
           <div className="max-w-7xl mx-auto px-6 py-8">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
@@ -190,7 +173,6 @@ export default async function BlogPage({
                 <p className="font-['DM_Sans',sans-serif] text-[#D4A853] text-xs tracking-[0.3em] uppercase mb-2">
                   Café · Hôtel · Restaurant
                 </p>
-                {/* h1 sémantique sur la homepage = nom du site */}
                 <h1
                   className="text-6xl md:text-7xl font-black tracking-tight leading-none"
                   style={{ fontFamily: "'Playfair Display', serif" }}
@@ -199,7 +181,6 @@ export default async function BlogPage({
                   <br />
                   <span className="text-4xl md:text-5xl font-normal italic">Insights</span>
                 </h1>
-                {/* Tagline indexable */}
                 <p className="mt-3 font-['DM_Sans',sans-serif] text-sm text-gray-400 max-w-md">
                   Actualités, analyses et guides pour les professionnels du café, de l&apos;hôtellerie et de la restauration.
                 </p>
@@ -209,8 +190,6 @@ export default async function BlogPage({
               </div>
             </div>
           </div>
-
-          {/* ── NAV CATÉGORIES ── */}
           <nav aria-label="Catégories d'articles" className="border-t border-white/10">
             <div className="max-w-7xl mx-auto px-6">
               <ul className="flex overflow-x-auto font-['DM_Sans',sans-serif] text-sm" role="list">
@@ -237,31 +216,23 @@ export default async function BlogPage({
             </div>
           </nav>
         </header>
-
-        {/* ── CONTENT ── */}
         <main className="max-w-7xl mx-auto px-6 py-10">
-          {/* Titre de rubrique indexable si filtre actif */}
           {selectedFamily && (
             <h2
               className="font-['DM_Sans',sans-serif] text-xs tracking-widest uppercase text-gray-500 mb-6"
               aria-label={`Rubrique : ${FAMILY_LABELS[selectedFamily]}`}
             >
               Rubrique : {FAMILY_LABELS[selectedFamily]}
-              <span className="ml-2 text-gray-400">— {filtered.length} article{filtered.length > 1 ? "s" : ""}</span>
+              <span className="ml-2 text-gray-400">- {filtered.length} article{filtered.length > 1 ? "s" : ""}</span>
             </h2>
           )}
-
           {paginated.length === 0 ? (
             <p className="text-gray-500 font-['DM_Sans',sans-serif] py-20 text-center">
               Aucun article publié pour l&apos;instant.
             </p>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-
-              {/* ── ARTICLES ── */}
               <section aria-label="Liste des articles" className="lg:col-span-8 space-y-0">
-
-                {/* Article à la une */}
                 {featured && (
                   <article
                     className="mb-8 pb-8 border-b-2 border-[#1A1A18]"
@@ -272,7 +243,6 @@ export default async function BlogPage({
                     {featured.publishedAt && (
                       <meta itemProp="datePublished" content={new Date(featured.publishedAt).toISOString()} />
                     )}
-
                     {featured.family && (
                       <span
                         className={`inline-block text-xs font-['DM_Sans',sans-serif] font-semibold tracking-widest uppercase px-3 py-1 rounded-sm mb-4 ${
@@ -282,7 +252,6 @@ export default async function BlogPage({
                         {FAMILY_LABELS[featured.family] ?? featured.family}
                       </span>
                     )}
-
                     <Link href={`/${featured.slug}`} className="group">
                       <h2
                         className="text-4xl md:text-5xl font-bold leading-tight group-hover:text-[#B8912A] transition-colors mb-4"
@@ -293,7 +262,6 @@ export default async function BlogPage({
                         {featured.title}
                       </h2>
                     </Link>
-
                     {featured.metaDescription && (
                       <p
                         className="text-xl text-gray-600 leading-relaxed mb-4"
@@ -303,7 +271,6 @@ export default async function BlogPage({
                         {featured.metaDescription}
                       </p>
                     )}
-
                     <div className="flex items-center gap-3 font-['DM_Sans',sans-serif] text-sm text-gray-500">
                       {featured.publishedAt && (
                         <time dateTime={new Date(featured.publishedAt).toISOString()}>
@@ -330,8 +297,6 @@ export default async function BlogPage({
                     </div>
                   </article>
                 )}
-
-                {/* Liste des autres articles */}
                 <div className="divide-y divide-gray-200">
                   {rest.map((article) => (
                     <article
@@ -344,7 +309,6 @@ export default async function BlogPage({
                       {article.publishedAt && (
                         <meta itemProp="datePublished" content={new Date(article.publishedAt).toISOString()} />
                       )}
-
                       <div className="flex gap-6 items-start">
                         <div className="hidden sm:block w-1 self-stretch bg-gray-200 group-hover:bg-[#D4A853] transition-colors rounded-full flex-shrink-0" />
                         <div className="flex-1 min-w-0">
@@ -376,7 +340,6 @@ export default async function BlogPage({
                               </span>
                             )}
                           </div>
-
                           <Link href={`/${article.slug}`}>
                             <h2
                               className="text-2xl font-bold leading-snug group-hover:text-[#B8912A] transition-colors mb-2"
@@ -387,7 +350,6 @@ export default async function BlogPage({
                               {article.title}
                             </h2>
                           </Link>
-
                           {article.metaDescription && (
                             <p
                               className="text-gray-600 text-lg leading-relaxed line-clamp-2"
@@ -402,8 +364,6 @@ export default async function BlogPage({
                     </article>
                   ))}
                 </div>
-
-                {/* Pagination avec liens canoniques */}
                 {totalPages > 1 && (
                   <nav
                     aria-label="Pagination des articles"
@@ -433,10 +393,7 @@ export default async function BlogPage({
                   </nav>
                 )}
               </section>
-
-              {/* ── SIDEBAR ── */}
               <aside aria-label="Informations complémentaires" className="lg:col-span-4 space-y-8">
-
                 <div className="bg-[#1A1A18] text-white p-6">
                   <p className="font-['DM_Sans',sans-serif] text-[#D4A853] text-xs tracking-widest uppercase mb-3">
                     À propos
@@ -447,7 +404,6 @@ export default async function BlogPage({
                     tendances sur les emballages et l&apos;actualité du marché.
                   </p>
                 </div>
-
                 <nav aria-label="Rubriques du blog" className="bg-white border border-gray-200 p-6">
                   <p className="font-['DM_Sans',sans-serif] text-xs tracking-widest uppercase text-gray-500 mb-4">
                     Rubriques
@@ -470,24 +426,6 @@ export default async function BlogPage({
                     ))}
                   </ul>
                 </nav>
-
-                <div className="p-6 border-2 border-[#D4A853]" style={{ background: "linear-gradient(135deg,#fffdf7,#fdf6e3)" }}>
-                  <p className="font-['DM_Sans',sans-serif] text-[#B8912A] text-xs tracking-widest uppercase mb-2">Newsletter</p>
-                  <p className="text-xl font-bold text-[#1A1A18] mb-3 leading-snug" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    Restez informé des tendances CHR
-                  </p>
-                  <p className="font-['DM_Sans',sans-serif] text-sm text-gray-600 mb-4">
-                    Chaque semaine, les analyses et actualités qui comptent pour votre activité.
-                  </p>
-                  <div className="space-y-2">
-                    <input type="email" placeholder="votre@email.com" aria-label="Adresse email newsletter"
-                      className="w-full px-3 py-2 border border-gray-300 text-sm font-['DM_Sans',sans-serif] focus:outline-none focus:border-[#D4A853]" />
-                    <button className="w-full bg-[#1A1A18] text-white text-sm font-['DM_Sans',sans-serif] font-semibold tracking-wide uppercase py-2.5 hover:bg-[#D4A853] hover:text-[#1A1A18] transition-colors">
-                      S&apos;abonner
-                    </button>
-                  </div>
-                </div>
-
                 <div className="bg-white border border-gray-200 p-6">
                   <p className="font-['DM_Sans',sans-serif] text-xs tracking-widest uppercase text-gray-500 mb-4">
                     Sujets tendance
@@ -506,8 +444,6 @@ export default async function BlogPage({
             </div>
           )}
         </main>
-
-        {/* ── FOOTER ── */}
         <footer className="bg-[#1A1A18] text-gray-400 mt-16">
           <div className="max-w-7xl mx-auto px-6 py-12">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
@@ -540,7 +476,7 @@ export default async function BlogPage({
               </nav>
             </div>
             <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-              <p className="text-xs font-['DM_Sans',sans-serif]">© {new Date().getFullYear()} CHR Insights — Tous droits réservés</p>
+              <p className="text-xs font-['DM_Sans',sans-serif]">© {new Date().getFullYear()} CHR Insights - Tous droits réservés</p>
               <p className="text-xs font-['DM_Sans',sans-serif] text-gray-600">Média d&apos;information professionnelle CHR</p>
             </div>
           </div>

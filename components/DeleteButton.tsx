@@ -6,7 +6,6 @@ export default function DeleteButton({ id, className }: { id: number, className?
       e.preventDefault();
     }
   }
-
   return (
     <button
       type="submit"

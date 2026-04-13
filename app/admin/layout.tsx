@@ -21,7 +21,6 @@ export default function AdminLayout({
           </span>
           <span className="block text-xs text-gray-400 mt-0.5">Admin</span>
         </div>
-
         <nav className="flex-1 px-3 py-4 space-y-0.5">
           {NAV.map((item) => (
             <Link
@@ -36,7 +35,6 @@ export default function AdminLayout({
             </Link>
           ))}
         </nav>
-
         <div className="px-6 py-4 border-t border-gray-100">
           <Link
             href="/"
@@ -47,7 +45,6 @@ export default function AdminLayout({
           </Link>
         </div>
       </aside>
-
       <main className="flex-1 ml-56 min-h-screen">
         {children}
       </main>

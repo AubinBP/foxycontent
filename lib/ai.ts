@@ -70,7 +70,6 @@ export async function fetchRecentNews(): Promise<NewsItem[]> {
     .slice(0, 8);
 }
 
-
 function countWords(text: string): number {
   return text
     .replace(/#{1,6}\s/g, "")
@@ -107,7 +106,7 @@ function validate(article: ArticleOutput): ValidationResult {
   return { ok: issues.length === 0, issues };
 }
 
-// ─── Prompts ──────────────────────────────────────────────────────────────────
+// Le prompt (à améliorer si besoin - Mais j'arrive pas à faire mieux)
 const MASTER_PROMPT = `Tu es un rédacteur expert du secteur CHR (Cafés, Hôtels, Restaurants) francophone.
 Tu rédiges des articles de blog professionnels, concrets, optimisés SEO.
 
@@ -234,7 +233,6 @@ function parseArticle(raw: string): ArticleOutput {
     .replace(/[^}]*$/, "")
     .trim();
 
-  // Répare une accolade manquante si le modèle a été coupé
   const open = (cleaned.match(/{/g) ?? []).length;
   const close = (cleaned.match(/}/g) ?? []).length;
   const fixed = open > close ? cleaned + "}".repeat(open - close) : cleaned;

@@ -62,7 +62,7 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  
+
   const [article, allArticles] = await Promise.all([
     getArticleBySlug(slug),
     getPublishedArticles(),
@@ -91,23 +91,20 @@ export default async function ArticlePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
       <div className="min-h-screen bg-[#F7F5F0] font-['Crimson_Pro',serif]">
-        {/* Top bar date */}
         <div className="bg-[#1A1A18] text-gray-400 text-xs font-['DM_Sans',sans-serif] tracking-widest uppercase">
-          <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
-            <span>Le média des pros CHR</span>
-            <span>
-              {new Date().toLocaleDateString("fr-FR", {
-                weekday: "long",
+          <div className="max-w-7xl mx-auto px-6 py-2 justify-between">
+            <p>Articles du :</p>
+        {/*ça marche quand même*/}
+            <time dateTime={article.publishedAt.toISOString()}> 
+              {new Date(article.publishedAt).toLocaleDateString("fr-FR", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
               })}
-            </span>
+            </time>
           </div>
         </div>
-
         <header className="bg-[#1A1A18] text-white border-b-4 border-[#D4A853]">
           <div className="max-w-7xl mx-auto px-6 py-8">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
@@ -127,13 +124,11 @@ export default async function ArticlePage({
                   </span>
                 </h1>
               </Link>
-
               <div className="md:w-80">
                 <SearchBar articles={allArticles} />
               </div>
             </div>
           </div>
-
           <nav className="border-t border-white/10">
             <div className="max-w-7xl mx-auto px-6">
               <ul className="flex overflow-x-auto font-['DM_Sans',sans-serif] text-sm">
@@ -149,11 +144,10 @@ export default async function ArticlePage({
                   <li key={f.value}>
                     <Link
                       href={`/?family=${f.value}`}
-                      className={`block px-4 py-4 whitespace-nowrap border-b-2 transition-colors ${
-                        article.family === f.value
+                      className={`block px-4 py-4 whitespace-nowrap border-b-2 transition-colors ${article.family === f.value
                           ? "border-[#D4A853] text-[#D4A853]"
                           : "border-transparent text-gray-400 hover:text-white hover:border-white/40"
-                      }`}
+                        }`}
                     >
                       {f.label}
                     </Link>
@@ -163,7 +157,6 @@ export default async function ArticlePage({
             </div>
           </nav>
         </header>
-
         <div className="max-w-7xl mx-auto px-6 pt-6">
           <nav
             aria-label="Fil d'ariane"
@@ -187,27 +180,23 @@ export default async function ArticlePage({
             <span className="text-gray-400 truncate max-w-xs">{article.title}</span>
           </nav>
         </div>
-
         <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-12 gap-10">
           <div className="lg:col-span-8">
             <header className="mb-8 pb-8 border-b-2 border-[#1A1A18]">
               {article.family && (
                 <span
-                  className={`inline-block text-xs font-['DM_Sans',sans-serif] font-semibold tracking-widest uppercase px-3 py-1 rounded-sm mb-5 ${
-                    FAMILY_COLORS[article.family] ?? "bg-gray-100 text-gray-700"
-                  }`}
+                  className={`inline-block text-xs font-['DM_Sans',sans-serif] font-semibold tracking-widest uppercase px-3 py-1 rounded-sm mb-5 ${FAMILY_COLORS[article.family] ?? "bg-gray-100 text-gray-700"
+                    }`}
                 >
                   {FAMILY_LABELS[article.family] ?? article.family}
                 </span>
               )}
-
               <h1
                 className="text-4xl md:text-5xl font-bold leading-tight mb-5"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 {article.title}
               </h1>
-
               {article.metaDescription && (
                 <p
                   className="text-xl md:text-2xl text-gray-600 leading-relaxed mb-5"
@@ -216,7 +205,6 @@ export default async function ArticlePage({
                   {article.metaDescription}
                 </p>
               )}
-
               <div className="flex flex-wrap items-center gap-3 font-['DM_Sans',sans-serif] text-sm text-gray-500">
                 <span className="font-semibold text-gray-700">CHR Insights</span>
                 {article.publishedAt && (
@@ -239,7 +227,6 @@ export default async function ArticlePage({
                 )}
               </div>
             </header>
-
             <article
               className="prose prose-lg max-w-none
               prose-headings:font-['Playfair_Display',serif] prose-headings:font-bold prose-headings:text-[#1A1A18]
@@ -256,7 +243,6 @@ export default async function ArticlePage({
             >
               <ReactMarkdown>{article.content ?? ""}</ReactMarkdown>
             </article>
-
             {tags.length > 0 && (
               <footer className="mt-10 pt-6 border-t border-gray-200">
                 <p className="font-['DM_Sans',sans-serif] text-xs tracking-widest uppercase text-gray-500 mb-3">
@@ -274,7 +260,6 @@ export default async function ArticlePage({
                 </div>
               </footer>
             )}
-
             {internalLinks.length > 0 && (
               <section
                 aria-label="Ressources associées"
@@ -305,7 +290,6 @@ export default async function ArticlePage({
                 </ul>
               </section>
             )}
-
             <div className="mt-10 pt-6 border-t border-gray-200">
               <Link
                 href="/"
@@ -316,7 +300,6 @@ export default async function ArticlePage({
               </Link>
             </div>
           </div>
-
           <aside className="lg:col-span-4 space-y-8">
             <div className="bg-[#1A1A18] text-white p-6">
               <p className="font-['DM_Sans',sans-serif] text-[#D4A853] text-xs tracking-widest uppercase mb-3">
@@ -331,7 +314,6 @@ export default async function ArticlePage({
                 tendances sur les emballages et l&apos;actualité du marché.
               </p>
             </div>
-
             <div className="bg-white border border-gray-200 p-6">
               <p className="font-['DM_Sans',sans-serif] text-xs tracking-widest uppercase text-gray-500 mb-4">
                 Rubriques
@@ -341,11 +323,10 @@ export default async function ArticlePage({
                   <li key={f.value}>
                     <Link
                       href={`/?family=${f.value}`}
-                      className={`flex items-center justify-between py-3 font-['DM_Sans',sans-serif] text-sm transition-colors group ${
-                        article.family === f.value
+                      className={`flex items-center justify-between py-3 font-['DM_Sans',sans-serif] text-sm transition-colors group ${article.family === f.value
                           ? "text-[#B8912A] font-semibold"
                           : "text-gray-700 hover:text-[#B8912A]"
-                      }`}
+                        }`}
                     >
                       <span>{f.label}</span>
                       <span className="text-gray-300 group-hover:text-[#D4A853] transition-colors">
@@ -358,6 +339,43 @@ export default async function ArticlePage({
             </div>
           </aside>
         </div>
+                <footer className="bg-[#1A1A18] text-gray-400 mt-16">
+          <div className="max-w-7xl mx-auto px-6 py-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+              <div>
+                <p className="text-white text-3xl font-black mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  CHR<span className="text-[#D4A853]">.</span>
+                  <span className="text-xl font-normal italic">Insights</span>
+                </p>
+                <p className="text-sm leading-relaxed">
+                  Le média indépendant dédié aux professionnels du café, hôtel et restauration en France.
+                </p>
+              </div>
+              <nav aria-label="Rubriques footer">
+                <p className="font-['DM_Sans',sans-serif] text-xs tracking-widest uppercase text-[#D4A853] mb-4">Rubriques</p>
+                <ul className="space-y-2 text-sm font-['DM_Sans',sans-serif]">
+                  {FAMILIES.filter((f) => f.value !== "").map((f) => (
+                    <li key={f.value}>
+                      <Link href={`/?family=${f.value}`} className="hover:text-white transition-colors">{f.label}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+              <nav aria-label="Liens légaux">
+                <p className="font-['DM_Sans',sans-serif] text-xs tracking-widest uppercase text-[#D4A853] mb-4">Informations</p>
+                <ul className="space-y-2 text-sm font-['DM_Sans',sans-serif]">
+                  <li><Link href="/mentions-legales" className="hover:text-white transition-colors">Mentions légales</Link></li>
+                  <li><Link href="/confidentialite" className="hover:text-white transition-colors">Politique de confidentialité</Link></li>
+                  <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                </ul>
+              </nav>
+            </div>
+            <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
+              <p className="text-xs font-['DM_Sans',sans-serif]">© {new Date().getFullYear()} CHR Insights - Tous droits réservés</p>
+              <p className="text-xs font-['DM_Sans',sans-serif] text-gray-600">Média d&apos;information professionnelle CHR</p>
+            </div>
+          </div>
+        </footer>
       </div>
     </>
   );

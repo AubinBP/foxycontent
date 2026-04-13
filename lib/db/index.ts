@@ -5,8 +5,6 @@ import path from "path";
 
 const dbPath = path.join(process.cwd(), "foxycontent.db");
 const sqlite = new Database(dbPath);
-
-// Active le mode WAL pour de meilleures performances
 sqlite.pragma("journal_mode = WAL");
 
 export const db = drizzle(sqlite, { schema });

@@ -3,7 +3,7 @@ import type { Config } from "drizzle-kit";
 export default {
   schema: "./lib/db/schema.ts",
   out: "./drizzle",
-  dialect: "sqlite", // On utilise "dialect" à la place de "driver"
+  dialect: "sqlite", 
   dbCredentials: {
     url: "./foxycontent.db",
   },

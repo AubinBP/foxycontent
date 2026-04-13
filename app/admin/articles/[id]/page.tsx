@@ -8,7 +8,6 @@ import { computeSeoScore } from "@/lib/seo";
 import ArticleEditor from "./Editor";
 
 export const dynamic = "force-dynamic";
-
 export default async function ArticleAdminPage({
   params,
 }: {
@@ -43,6 +42,8 @@ export default async function ArticleAdminPage({
     revalidatePath("/");
     redirect("/admin/articles");
   }
+
+  
 
   return (
     <div className="p-8 max-w-4xl">
@@ -80,7 +81,6 @@ export default async function ArticleAdminPage({
           )}
         </div>
       </div>
-
       <div className="bg-white border border-gray-200 rounded-xl p-5 mb-6">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-semibold text-gray-700">Score SEO</h2>
@@ -107,7 +107,6 @@ export default async function ArticleAdminPage({
           ))}
         </div>
       </div>
-
       <div className="bg-white border border-gray-200 rounded-xl p-6">
         <h2 className="text-sm font-semibold text-gray-700 mb-5">Modifier l&apos;article</h2>
         <ArticleEditor

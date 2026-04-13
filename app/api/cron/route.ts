@@ -53,8 +53,12 @@ export async function GET(req: Request) {
   }
 
   try {
-    const articlesPerDay = parseInt(await getSetting("articles_per_day")) || 3;
-    const autoPublish = (await getSetting("auto_publish")) === "true";
+    const articlesPerDay =
+      parseInt(await getSetting("articles_per_day")) || 3;
+
+    const autoPublish =
+      (await getSetting("auto_publish")) === "true";
+
     const backlinks = await getBacklinks();
 
     const news = await getNews();
@@ -62,20 +66,16 @@ export async function GET(req: Request) {
     const results = [];
 
     for (let i = 0; i < articlesPerDay; i++) {
-      let brief;
 
-      if (news.length > 0 && Math.random() > 0.5) {
-        const randomNews = news[Math.floor(Math.random() * news.length)];
-
-        brief = {
-          topic: randomNews.title,
-          family: "actualite-resto",
-          keywords: ["actualité restauration", "CHR news"],
-          angle: "actualité",
-        };
-      } else {
-        brief = AUTO_BRIEFS[Math.floor(Math.random() * AUTO_BRIEFS.length)];
-      }
+      const brief =
+        news.length > 0
+          ? {
+              topic: news[Math.floor(Math.random() * news.length)].title,
+              family: "actualite-resto",
+              keywords: ["actualité restauration", "CHR news"],
+              angle: "actualité",
+            }
+          : AUTO_BRIEFS[Math.floor(Math.random() * AUTO_BRIEFS.length)];
 
       const anchor =
         backlinks.length > 0
@@ -89,7 +89,9 @@ export async function GET(req: Request) {
           backlinkAnchor: anchor,
           withNews: true,
         });
+
         const slugBase = result.slug;
+
         const existing = await db.query.articles.findFirst({
           where: (a, { eq }) => eq(a.slug, slugBase),
         });
@@ -111,7 +113,11 @@ export async function GET(req: Request) {
           publishedAt: autoPublish ? new Date() : null,
         });
 
-        results.push({ slug: finalSlug, success: true });
+        results.push({
+          slug: finalSlug,
+          success: true,
+        });
+
       } catch (err) {
         console.error("Erreur génération :", err);
 
@@ -130,7 +136,11 @@ export async function GET(req: Request) {
       generated: results,
       usedNews: news.length > 0,
     });
+
   } catch (err) {
-    return Response.json({ error: String(err) }, { status: 500 });
+    return Response.json(
+      { error: String(err) },
+      { status: 500 }
+    );
   }
 }

@@ -54,7 +54,6 @@ export default function GeneratePage() {
       const data: GenerateResult = await res.json();
       setResult(data);
 
-      // Redirige après 2s si tout est ok, sinon reste sur la page avec le rapport
       if (data.validationOk) {
         setTimeout(() => router.push("/admin/articles"), 2000);
       }
@@ -72,7 +71,6 @@ export default function GeneratePage() {
           ← Retour au dashboard
         </a>
       </div>
-
       <h1 className="text-2xl font-bold mb-2">Générer un article</h1>
       <p className="text-gray-500 text-sm mb-8">
         Remplis le brief ci-dessous. Phi-4 va rédiger l&apos;article en s&apos;appuyant sur les flux
@@ -118,10 +116,7 @@ export default function GeneratePage() {
           )}
         </div>
       )}
-
       <form onSubmit={handleSubmit} className="space-y-5">
-
-        {/* Toggle actualité */}
         <div className="flex items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-lg">
           <div>
             <p className="text-sm font-medium text-gray-700">Enrichir avec l&apos;actualité CHR</p>
@@ -143,7 +138,6 @@ export default function GeneratePage() {
             />
           </button>
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Sujet de l&apos;article *
@@ -155,7 +149,6 @@ export default function GeneratePage() {
             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
           />
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Catégorie *
@@ -171,7 +164,6 @@ export default function GeneratePage() {
             ))}
           </select>
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Mots-clés SEO *
@@ -184,7 +176,6 @@ export default function GeneratePage() {
           />
           <p className="text-xs text-gray-400 mt-1">Séparés par des virgules.</p>
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Angle éditorial *
@@ -200,7 +191,6 @@ export default function GeneratePage() {
             ))}
           </select>
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Longueur cible (mots)
@@ -214,7 +204,6 @@ export default function GeneratePage() {
             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
           />
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Ancre du backlink vers foxytable.com
@@ -225,7 +214,6 @@ export default function GeneratePage() {
             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
           />
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Notes complémentaires (optionnel)
@@ -237,7 +225,6 @@ export default function GeneratePage() {
             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
           />
         </div>
-
         <button
           type="submit"
           disabled={loading}

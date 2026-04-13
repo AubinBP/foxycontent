@@ -38,17 +38,13 @@ export default async function SettingsPage() {
           ← Retour au dashboard
         </Link>
       </div>
-
       <h1 className="text-2xl font-bold mb-2">Paramètres</h1>
       <p className="text-gray-500 text-sm mb-8">
         Configure la génération automatique et les backlinks.
       </p>
-
       <form action={saveSettings} className="space-y-8">
-
         <section className="border rounded-xl p-6">
           <h2 className="font-semibold text-gray-800 mb-4">Génération automatique</h2>
-
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -66,7 +62,6 @@ export default async function SettingsPage() {
                 Entre 1 et 10 articles par déclenchement du cron.
               </p>
             </div>
-
             <div className="flex items-center gap-3">
               <input
                 type="checkbox"
@@ -84,13 +79,11 @@ export default async function SettingsPage() {
             </p>
           </div>
         </section>
-
         <section className="border rounded-xl p-6">
           <h2 className="font-semibold text-gray-800 mb-1">Backlinks vers foxytable.com</h2>
           <p className="text-xs text-gray-400 mb-4">
             Ces 6 ancres sont utilisées en rotation dans chaque article généré.
           </p>
-
           <div className="space-y-2">
             {Array.from({ length: 6 }, (_, i) => (
               <div key={i} className="flex items-center gap-2">
@@ -106,7 +99,6 @@ export default async function SettingsPage() {
             ))}
           </div>
         </section>
-
         <button
           type="submit"
           className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg transition-colors text-sm"

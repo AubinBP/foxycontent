@@ -2,7 +2,6 @@ import { db } from "./db";
 import { settings } from "./db/schema";
 import { eq } from "drizzle-orm";
 
-// Valeurs par défaut
 const DEFAULTS: Record<string, string> = {
   articles_per_day: "3",
   auto_publish: "true",

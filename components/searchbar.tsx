@@ -40,14 +40,13 @@ export default function SearchBar({ articles }: { articles: Article[] }) {
 
     const filtered = articles
       .filter((a) => a.title.toLowerCase().includes(search))
-      .slice(0, 5); // limite résultats
+      .slice(0, 5);
 
     setResults(filtered);
   };
 
   return (
     <div ref={containerRef} className="relative w-full">
-      {/* Input */}
       <input
         type="text"
         placeholder="Rechercher un article..."

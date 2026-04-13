@@ -54,8 +54,6 @@ export default async function ArticlesAdminPage({
           + Nouvel article
         </Link>
       </div>
-
-      {/* Filtres */}
       <div className="flex flex-wrap gap-3 mb-6">
         <form method="GET" className="flex flex-wrap gap-3 w-full">
           <input
@@ -93,8 +91,6 @@ export default async function ArticlesAdminPage({
           )}
         </form>
       </div>
-
-      {/* Tableau */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         {filtered.length === 0 ? (
           <div className="p-12 text-center">
@@ -178,7 +174,6 @@ export default async function ArticlesAdminPage({
                       >
                         Modifier
                       </Link>
-
                       <form action={deleteAction}>
                         <input type="hidden" name="id" value={article.id} />
                         <DeleteButton
